@@ -1,6 +1,5 @@
 -- 1. 
 -- edms database creation
-/*
 create database edms;
 
 \c edms;
@@ -67,30 +66,29 @@ values
 (68736 , 'ADNRES' , 'CLERK' , 67858 , '1997-05-23' , 1200.00 , null , 2001),
 (69000 , 'JULIUS' , 'CLERK' , 66928 , '1991-12-03' , 1050.00 , null , 3001),
 (69324 , 'MARKER' , 'CLERK' , 67832 , '1992-01-23' , 1400.00 , null , 1001);
-*/
 
--- 2.
+-- 2. No managers with salary between 1500 and 2500
 select emp_name
 from employees 
 where job_name = 'MANAGER' and salary between 1500 and 2500;
 
--- 3.
+-- 3. ADELYN AND MADDEN
 select emp_name
 from employees
 where job_name = 'SALESMAN' and (salary + coalesce(commission,0.0)) > 2000;
 
--- 4.
+-- 4. KAYLING, CLARE, AND MARKER
 select emp_name
 from employees a natural join department b
 where dep_location='SYDNEY';
 
--- 5.
+-- 5. SCARLET AND FRANK
 select a.emp_name
 from employees a inner join employees b 
 on a.manager_id = b.emp_id
 where a.salary > b.salary;
 
---6.
+--6. WADE AND MADDEN
 select emp_name
 from employees a, salary_grade b
 where b.grade = 2 
@@ -98,24 +96,40 @@ and (a.salary >= b.min_salary and a.salary <= b.max_salary)
 and a.job_name = 'SALESMAN';
 
 --7.
+--  emp_name | grade
+-- ----------+-------
+--  SANDRINE |     1
+--  ADNRES   |     1
+--  JULIUS   |     1
+--  WADE     |     2
+--  MADDEN   |     2
+--  MARKER   |     2
+--  ADELYN   |     3
+--  TUCKER   |     3
+--  BLAZE    |     4
+--  CLARE    |     4
+--  JONAS    |     4
+--  SCARLET  |     4
+--  FRANK    |     4
+--  KAYLING  |     5
 select a.emp_name, b.grade 
 from employees a, salary_grade b 
 where (a.salary >= b.min_salary and a.salary <= b.max_salary)
 order by b.grade;
 
--- 8.
+-- 8. BLAZE
 select distinct(b.emp_name)
 from employees a inner join employees b 
 on a.manager_id = b.emp_id
 where a.job_name='SALESMAN';
 
 
--- 9.
+-- 9. AUDIT
 select dep_name
 from department
 where dep_location = 'MELBOURNE';
 
--- 10.
+-- 10. KAYLING AND BLAZE 
 select b.emp_name
 from employees a inner join employees b 
 on a.manager_id = b.emp_id
@@ -127,11 +141,11 @@ select emp_name, to_char((salary + (salary*0.15)),'$999G999D000') as "increased 
 from  employees;
 
 -- 12. 
-select (emp_name || ' ' || job_name) as "Employee & Job" 
+select (emp_name || '-' || job_name) as "Employee & Job" 
 from employees;
 
 -- 13.
-select emp_name, to_char(hire_date, 'Month DD, YYYY')
+select emp_name, to_char(hire_date, 'Month DD, YYYY') as "Hire date"
 from employees;
 
 -- 14.
@@ -145,7 +159,7 @@ from employees
 where hire_date < '1992-12-31';
 
 -- 16.
-select emp_id, emp_name, salary,age(now(),hire_date) as "YOE"
+select emp_id, emp_name, salary, age(now(),hire_date) as "YOE"
 from employees
 where age(now(),hire_date) > interval '10 years';
 
