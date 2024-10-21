@@ -83,7 +83,7 @@ from employees a natural join department b
 where dep_location='SYDNEY';
 
 -- 5. SCARLET AND FRANK
-select a.emp_name
+select a.emp_name, a.salary as "employee salary", b.emp_name, b.salary as "manager salary"
 from employees a inner join employees b 
 on a.manager_id = b.emp_id
 where a.salary > b.salary;
@@ -149,7 +149,7 @@ select emp_name, to_char(hire_date, 'Month DD, YYYY') as "Hire date"
 from employees;
 
 -- 14.
-select emp_name
+select *
 from employees
 where date_part('month',hire_date) = 1;
 
@@ -164,7 +164,7 @@ from employees
 where age(now(),hire_date) > interval '10 years';
 
 -- 17.
-select emp_name
+select *
 from employees
 where emp_name ~ 'AR';
 
